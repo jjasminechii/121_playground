@@ -4,6 +4,10 @@ import java.util.*;
 public class FullMusic {
 
     public static final String NOTES = "ABCDEFG";
+    public static final String[] SCALE = {
+        "A", "A♯/B♭", "B", "C", "C♯/D♭", "D", "D♯/E♭", "E", "F", "F♯/G♭", "G", "G♯/A♭"
+    };
+    public static final int SCALE_LENGTH = SCALE.length;
 
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
@@ -31,6 +35,14 @@ public class FullMusic {
 
         analyzeNoteDistribution(notes);
         analyzeNoteDistributionSplit(notes, 3);
+
+        String[][] song = {{"C", "D", "E", "F"}, {"A", "B", "C", "F"}};
+        int shift = 2; // Example shift value
+        String[][] shiftedSong = fastForward(song, shift);
+
+        for (String[] melody : shiftedSong) {
+            System.out.println(Arrays.toString(melody));
+        }
     }
 
     // Method to check validity of note string
@@ -99,30 +111,36 @@ public class FullMusic {
         }
     }
 
-    // cool idea but likely too difficult
     public static void analyzeNoteDistributionSplit(String notes, int numSections) {
         int sectionLength = notes.length() / numSections;
         int[][] noteDistributions = new int[numSections][NOTES.length()];
     
         for (int section = 0; section < numSections; section++) {
-            int start = section * sectionLength;
-            int end = start + sectionLength;
-            if (section == numSections - 1) {
-                end = notes.length();
-            } 
-            String subsection = notes.substring(start, end);
-            int[] counts = countNotes(subsection);
-            for (int i = 0; i < counts.length; i++) {
-                noteDistributions[section][i] = counts[i];
-            }
+            int[] indices = calculateSectionIndices(section, sectionLength, notes.length(), numSections);
+            String subsection = notes.substring(indices[0], indices[1]);
+            noteDistributions[section] = countNotes(subsection);
         }
     
-        // Print the note distributions for each section
+        printNoteDistributions(noteDistributions, numSections);
+    }
+    
+    // Method to calculate start and end indices of a section
+    public static int[] calculateSectionIndices(int section, int sectionLength, int totalLength, int numSections) {
+        int start = section * sectionLength;
+        int end = start + sectionLength;
+        if (section == numSections - 1) {
+            end = totalLength;
+        }
+        return new int[]{start, end};
+    }
+    
+    // Method to print note distributions
+    public static void printNoteDistributions(int[][] distributions, int numSections) {
         System.out.println("Note distribution across " + numSections + " sections:");
         for (int noteIndex = 0; noteIndex < NOTES.length(); noteIndex++) {
             System.out.print(NOTES.charAt(noteIndex) + ": ");
             for (int section = 0; section < numSections; section++) {
-                System.out.print("Section " + (section + 1) + " = " + noteDistributions[section][noteIndex]);
+                System.out.print("Section " + (section + 1) + " = " + distributions[section][noteIndex]);
                 if (section < numSections - 1) {
                     System.out.print(", ");
                 }
@@ -130,5 +148,33 @@ public class FullMusic {
             System.out.println();
         }
     }
+
+    public static String[][] fastForward(String[][] song, int shift) {
+        String[][] transposedSong = new String[song.length][song[0].length];
+        for (int i = 0; i < song.length; i++) {
+            transposedSong[i] = new String[song[i].length];
+            for (int j = 0; j < song[i].length; j++) {
+                transposedSong[i][j] = shiftNote(song[i][j], shift);
+            }
+        }
+        return transposedSong;
+    }
+
+    public static String shiftNote(String note, int shift) {
+        int noteIndex = getNoteIndex(note);
+        int transposedIndex = (noteIndex + shift + SCALE_LENGTH) % SCALE_LENGTH;
+        return SCALE[transposedIndex];
+    }    
+
+    public static int getNoteIndex(String note) {
+        for (int i = 0; i < SCALE.length; i++) {
+             // let's checks if the scale contains the note either as sharp or flat
+            if (SCALE[i].contains(note)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     
 }
