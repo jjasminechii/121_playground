@@ -1,0 +1,15 @@
+Enter the number of melodies: 3
+Enter the length of each melody: 2
+
+Composing melody #1
+  Enter note #1: C
+  Enter note #2: C♭
+
+Composing melody #2
+  Enter note #1: E
+  Enter note #2: E♭
+
+Composing melody #3
+  Enter note #1: A
+  Enter note #2: G♯
+

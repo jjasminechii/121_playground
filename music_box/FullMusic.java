@@ -10,39 +10,40 @@ public class FullMusic {
     public static final int SCALE_LENGTH = SCALE.length;
 
     public static void main(String[] args) {
-        Scanner console = new Scanner(System.in);
-        String notes = "";
-        boolean isValidNoteString = true;
+        current();
+        // Scanner console = new Scanner(System.in);
+        // String notes = "";
+        // boolean isValidNoteString = true;
 
-        while (isValidNoteString) {
-            System.out.print("Enter a string of notes (A-G) or a non-note character to finish: ");
-            String input = console.next().toUpperCase();
+        // while (isValidNoteString) {
+        //     System.out.print("Enter a string of notes (A-G) or a non-note character to finish: ");
+        //     String input = console.next().toUpperCase();
 
-            if (!isNoteStringValid(input)) {
-                isValidNoteString = false;
-            } else {
-                notes += input;
-            }
-        }
+        //     if (!isNoteStringValid(input)) {
+        //         isValidNoteString = false;
+        //     } else {
+        //         notes += input;
+        //     }
+        // }
 
-        // Find the most common note
-        String mostCommonNote = mostCommonNote(notes);
-        System.out.println("The most common note is: " + mostCommonNote);
+        // // Find the most common note
+        // String mostCommonNote = mostCommonNote(notes);
+        // System.out.println("The most common note is: " + mostCommonNote);
 
-        // Translate to Solfege and print
-        String solfegeString = translateToSolfege(notes);
-        System.out.println("Translated to Solfege: " + solfegeString);
+        // // Translate to Solfege and print
+        // String solfegeString = translateToSolfege(notes);
+        // System.out.println("Translated to Solfege: " + solfegeString);
 
-        analyzeNoteDistribution(notes);
-        analyzeNoteDistributionSplit(notes, 3);
+        // analyzeNoteDistribution(notes);
+        // analyzeNoteDistributionSplit(notes, 3);
 
-        String[][] song = {{"C", "D", "E", "F"}, {"A", "B", "C", "F"}};
-        int shift = 2; // Example shift value
-        String[][] shiftedSong = fastForward(song, shift);
+        // String[][] song = {{"C", "D", "E", "F"}, {"A", "B", "C", "F"}};
+        // int shift = 2; // Example shift value
+        // String[][] shiftedSong = fastForward(song, shift);
 
-        for (String[] melody : shiftedSong) {
-            System.out.println(Arrays.toString(melody));
-        }
+        // for (String[] melody : shiftedSong) {
+        //     System.out.println(Arrays.toString(melody));
+        // }
     }
 
     // Method to check validity of note string
@@ -175,6 +176,9 @@ public class FullMusic {
         }
         return -1;
     }
-    
-    
+    public static void current() {
+        Random rand = new Random();
+        int curr = rand.nextInt(1,4);
+        System.out.println(curr);
+    }    
 }
